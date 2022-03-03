@@ -1,0 +1,39 @@
+// sample for flask app
+
+1. OS - Ubuntu
+2. Update apt repo
+3. Install dependencies using apt
+4. Install python dependencies using pip
+5. Copy source code to /opt folder
+6. Run webserver using flask command
+
+********************************************Start Dockerfile********************************************
+// [INSTRUCTION] [ARGUMENT]
+// Layered architecture
+// Layer 1: Start from a base OS or another image
+FROM Ubuntu
+
+// Layer 2: Install all dependencies
+RUN apt-get update
+RUN apt-get install python
+
+// Layer 3:
+RUN pip install flask
+RUN pip install flask-mysql
+
+// Layer 4: Copy source code
+COPY . /opt/source-code
+
+// Layer 5: Specify entry
+ENTRYPOINT FLASK_APP=/opt/source-code/app.py flask run
+*********************************************End Dockerfile**********************************************
+// Create image locally on system
+docker build -t pratik_sanghavi/my-custom-app .
+
+// get size of each layer
+docker history pratik_sanghavi/my-custom-app
+
+// Push to docker hub
+docker push <account_name>/<image_name>
+
+// all failures are cached layer-wise 
